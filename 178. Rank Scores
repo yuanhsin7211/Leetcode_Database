@@ -26,13 +26,19 @@
 | 3.65  | 3    |
 | 3.50  | 4    |
 +-------+------+
-/* Solution */
-SELECT Score,  (SELECT COUNT(DISTINCT(Score)) FROM  Scores b WHERE b.Score > a.Score) + 1 AS Rank
-       FROM Scores a
-       ORDER by Score DESC
-       
-SELECT COUNT(DISTINCT(Score)) 
-FROM  Scores b 
-WHERE b.Score > a.Score       
+/* Solution 1 */
+SELECT Score,  
+       (SELECT COUNT(DISTINCT(Score)) FROM  Scores b WHERE b.Score > a.Score) + 1 AS Rank   --focus on "WHERE b.Score > a.Score"
+FROM Scores a
+ORDER by Score DESC
+
+/* Solution 2 */
+SELECT Score, Rank FROM(
+  SELECT    Score,
+            @curRank := @curRank + IF(@prevScore = Score, 0, 1) AS Rank,
+            @prevScore := Score
+  FROM      Scores s, (SELECT @curRank := 0) r, (SELECT @prevScore := NULL) p
+  ORDER BY  Score DESC
+) t;
 
 
