@@ -26,3 +26,20 @@
 | IT         | Max      | 90000  |
 | Sales      | Henry    | 80000  |
 +------------+----------+--------+
+
+/* ON is the more general of the two. One can join tables ON a column, a set of columns and even a condition. 
+   USING is useful when both tables share a column of the exact same name on which they join.  */
+
+SELECT d.Name AS Department,e.Name AS Employee,t.Salary
+
+FROM Employee e
+
+INNER JOIN (SELECT DepartmentId,MAX(Salary) AS Salary FROM Employee GROUP BY DepartmentId) t
+USING(DepartmentId,Salary)
+
+INNER JOIN Department d
+ON d.Id=t.DepartmentId;
+
+
+
+
