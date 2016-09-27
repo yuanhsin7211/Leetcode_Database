@@ -1,6 +1,5 @@
 **** Medium ****
-Write a SQL query to get the nth highest salary from the Employee table.
-
+-- Write a SQL query to get the nth highest salary from the Employee table.
 +----+--------+
 | Id | Salary |
 +----+--------+
@@ -8,5 +7,22 @@ Write a SQL query to get the nth highest salary from the Employee table.
 | 2  | 200    |
 | 3  | 300    |
 +----+--------+
-For example, given the above Employee table, the nth highest salary where n = 2 is 200. 
-If there is no nth highest salary, then the query should return null.
+-- For example, given the above Employee table, the nth highest salary where n = 2 is 200. 
+-- If there is no nth highest salary, then the query should return null.
+
+/*Limit 5,10 : retrieve from row6 and count 10 rows(6-15)
+  Limit 5: retrieve first 5 rows                          */
+
+CREATE FUNCTION getNthHighestSalary(N INT)
+RETURNS INT
+
+BEGIN
+
+ DECLARE M INT;
+ SET M=N-1;
+ RETURN 
+ (
+    SELECT DISTINCT Salary FROM Employee ORDER BY Salary DESC LIMIT M,1
+ );
+
+END
